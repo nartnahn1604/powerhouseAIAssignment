@@ -224,26 +224,64 @@ public class MainActivity extends AppCompatActivity implements MainInterface {
             cityWeatherModelArrayList.add(currentCity);
     }
 
-
-
     @SuppressLint("SetTextI18n")
     private void loadUI(){
         String iconUrl = "http://openweathermap.org/img/w/" +  weatherData.get("weather").getAsJsonArray().get(0).getAsJsonObject().get("icon").getAsString() + ".png";
         Picasso.get().load(iconUrl).into(binding.imgIcon);
 
-        binding.tvLocation.setText(weatherData.get("name").getAsString() + ", " + weatherData.get("sys").getAsJsonObject().get("country").getAsString());
-        binding.tvMainWeather.setText(weatherData.get("weather").getAsJsonArray().get(0).getAsJsonObject().get("main").getAsString());
-        binding.tvSubWeather.setText(weatherData.get("weather").getAsJsonArray().get(0).getAsJsonObject().get("description").getAsString());
-        binding.tvTemp.setText( Math.ceil(weatherData.get("main").getAsJsonObject().get("temp").getAsFloat() - 272.15) + "\u00B0" + "C");
-        binding.tvFeel.setText("Feels like " + Math.ceil(weatherData.get("main").getAsJsonObject().get("feels_like").getAsFloat() - 272.15) + "\u00B0" + "C");
-        binding.tvMax.setText("Max: " + Math.ceil(weatherData.get("main").getAsJsonObject().get("temp_max").getAsFloat() - 272.15) + "\u00B0" + "C");
-        binding.tvMin.setText("Min: " + Math.ceil(weatherData.get("main").getAsJsonObject().get("temp_min").getAsFloat() - 272.15) + "\u00B0" + "C");
-        binding.tvWind.setText("Wind: " + Math.ceil(weatherData.get("wind").getAsJsonObject().get("speed").getAsFloat() * 3.6) + "km/h");
-        binding.tvHumidity.setText("Humidity: " + weatherData.get("main").getAsJsonObject().get("humidity").getAsString() + "%");
-        binding.tvVisibility.setText("Visibility: " + (weatherData.get("visibility").getAsInt() / 1000) + "km");
-        binding.tvPressure.setText("Pressure: " + weatherData.get("main").getAsJsonObject().get("humidity").getAsString() + "hPa");
-        binding.tvSeaLevel.setText("Sea: " + weatherData.get("main").getAsJsonObject().get("sea_level").getAsString() + "hPa");
-        binding.tvGroundLevel.setText("Ground: " + weatherData.get("main").getAsJsonObject().get("grnd_level").getAsString() + "hPa");
+        String Location = weatherData.get("name").getAsString() + ", " + weatherData.get("sys").getAsJsonObject().get("country").getAsString();
+        if(Location == null)
+            Location = "";
+        String MainWeather = weatherData.get("weather").getAsJsonArray().get(0).getAsJsonObject().get("main").getAsString();
+        if(MainWeather == null)
+            MainWeather = "";
+        String SubWeather = weatherData.get("weather").getAsJsonArray().get(0).getAsJsonObject().get("description").getAsString();
+        if(SubWeather == null)
+            SubWeather = "";
+        String Temp = Math.ceil(weatherData.get("main").getAsJsonObject().get("temp").getAsFloat() - 272.15) + "\u00B0" + "C";
+        if(Temp == null)
+            Temp = "";
+        String Feel = "Feels like " + Math.ceil(weatherData.get("main").getAsJsonObject().get("feels_like").getAsFloat() - 272.15) + "\u00B0" + "C";
+        if(Feel == null)
+            Feel = "";
+        String Max = "Max: " + Math.ceil(weatherData.get("main").getAsJsonObject().get("temp_max").getAsFloat() - 272.15) + "\u00B0" + "C";
+        if(Max == null)
+            Max = "";
+        String Min = "Min: " + Math.ceil(weatherData.get("main").getAsJsonObject().get("temp_min").getAsFloat() - 272.15) + "\u00B0" + "C";
+        if(Min == null)
+            Min = "";
+        String Wind = "Wind: " + Math.ceil(weatherData.get("wind").getAsJsonObject().get("speed").getAsFloat() * 3.6) + "km/h";
+        if(Wind == null)
+            Wind = "";
+        String Humidity = "Humidity: " + weatherData.get("main").getAsJsonObject().get("humidity").getAsString() + "%";
+        if(Humidity == null)
+            Humidity = "";
+        String Visibility = "Visibility: " + (weatherData.get("visibility").getAsInt() / 1000) + "km";
+        if(Visibility == null)
+            Visibility = "";
+        String Pressure = "Pressure: " + weatherData.get("main").getAsJsonObject().get("humidity").getAsString() + "hPa";
+        if(Pressure == null)
+            Pressure = "";
+        String SeaLevel = "Sea: " + weatherData.get("main").getAsJsonObject().get("sea_level").getAsString() + "hPa";
+        if(SeaLevel == null)
+            SeaLevel = "";
+        String GroundLevel = "Ground: " + weatherData.get("main").getAsJsonObject().get("grnd_level").getAsString() + "hPa";
+        if(GroundLevel == null)
+            GroundLevel = "";
+
+        binding.tvLocation.setText(Location);
+        binding.tvMainWeather.setText(MainWeather);
+        binding.tvSubWeather.setText(SubWeather);
+        binding.tvTemp.setText(Temp);
+        binding.tvFeel.setText(Feel);
+        binding.tvMax.setText(Max);
+        binding.tvMin.setText(Min);
+        binding.tvWind.setText(Wind);
+        binding.tvHumidity.setText(Humidity);
+        binding.tvVisibility.setText(Visibility);
+        binding.tvPressure.setText(Pressure);
+        binding.tvSeaLevel.setText(SeaLevel);
+        binding.tvGroundLevel.setText(GroundLevel);
 
         HourWeatherAdapter hourWeatherAdapter = new HourWeatherAdapter(hourWeatherModelArrayList);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false);
