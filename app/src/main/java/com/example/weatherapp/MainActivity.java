@@ -230,44 +230,18 @@ public class MainActivity extends AppCompatActivity implements MainInterface {
         Picasso.get().load(iconUrl).into(binding.imgIcon);
 
         String Location = weatherData.get("name").getAsString() + ", " + weatherData.get("sys").getAsJsonObject().get("country").getAsString();
-        if(Location == null)
-            Location = "";
         String MainWeather = weatherData.get("weather").getAsJsonArray().get(0).getAsJsonObject().get("main").getAsString();
-        if(MainWeather == null)
-            MainWeather = "";
         String SubWeather = weatherData.get("weather").getAsJsonArray().get(0).getAsJsonObject().get("description").getAsString();
-        if(SubWeather == null)
-            SubWeather = "";
-        String Temp = Math.ceil(weatherData.get("main").getAsJsonObject().get("temp").getAsFloat() - 272.15) + "\u00B0" + "C";
-        if(Temp == null)
-            Temp = "";
+        String Temp =  Math.ceil(weatherData.get("main").getAsJsonObject().get("temp").getAsFloat() - 272.15) + "\u00B0" + "C";
         String Feel = "Feels like " + Math.ceil(weatherData.get("main").getAsJsonObject().get("feels_like").getAsFloat() - 272.15) + "\u00B0" + "C";
-        if(Feel == null)
-            Feel = "";
-        String Max = "Max: " + Math.ceil(weatherData.get("main").getAsJsonObject().get("temp_max").getAsFloat() - 272.15) + "\u00B0" + "C";
-        if(Max == null)
-            Max = "";
-        String Min = "Min: " + Math.ceil(weatherData.get("main").getAsJsonObject().get("temp_min").getAsFloat() - 272.15) + "\u00B0" + "C";
-        if(Min == null)
-            Min = "";
-        String Wind = "Wind: " + Math.ceil(weatherData.get("wind").getAsJsonObject().get("speed").getAsFloat() * 3.6) + "km/h";
-        if(Wind == null)
-            Wind = "";
-        String Humidity = "Humidity: " + weatherData.get("main").getAsJsonObject().get("humidity").getAsString() + "%";
-        if(Humidity == null)
-            Humidity = "";
-        String Visibility = "Visibility: " + (weatherData.get("visibility").getAsInt() / 1000) + "km";
-        if(Visibility == null)
-            Visibility = "";
-        String Pressure = "Pressure: " + weatherData.get("main").getAsJsonObject().get("humidity").getAsString() + "hPa";
-        if(Pressure == null)
-            Pressure = "";
-        String SeaLevel = "Sea: " + weatherData.get("main").getAsJsonObject().get("sea_level").getAsString() + "hPa";
-        if(SeaLevel == null)
-            SeaLevel = "";
-        String GroundLevel = "Ground: " + weatherData.get("main").getAsJsonObject().get("grnd_level").getAsString() + "hPa";
-        if(GroundLevel == null)
-            GroundLevel = "";
+        String Max = "Max: " + Math.ceil(weatherData.get("main").getAsJsonObject().get("temp_max") == null ? 0 : weatherData.get("main").getAsJsonObject().get("temp_max").getAsFloat() - 272.15) + "\u00B0" + "C";
+        String Min = "Min: " + Math.ceil(weatherData.get("main").getAsJsonObject().get("temp_min") == null ? 0 : weatherData.get("main").getAsJsonObject().get("temp_min").getAsFloat() - 272.15) + "\u00B0" + "C";
+        String Wind = "Wind: " + Math.ceil(weatherData.get("wind").getAsJsonObject().get("speed") == null ? 0 : weatherData.get("wind").getAsJsonObject().get("speed").getAsFloat() * 3.6) + "km/h";
+        String Humidity = "Humidity: " + (weatherData.get("main").getAsJsonObject().get("humidity") == null ? "": weatherData.get("main").getAsJsonObject().get("humidity").getAsString()) + "%";
+        String Visibility = "Visibility: " + (weatherData.get("visibility") == null ? 0 : weatherData.get("visibility").getAsInt() / 1000) + "km";
+        String Pressure = "Pressure: " + (weatherData.get("main").getAsJsonObject().get("humidity") == null ? "": weatherData.get("main").getAsJsonObject().get("humidity").getAsString()) + "hPa";
+        String SeaLevel = "Sea: " + (weatherData.get("main").getAsJsonObject().get("sea_level") == null ? "" : weatherData.get("main").getAsJsonObject().get("sea_level").getAsString()) + "hPa";
+        String GroundLevel = "Ground: " + (weatherData.get("main").getAsJsonObject().get("grnd_level") == null ? "": weatherData.get("main").getAsJsonObject().get("grnd_level").getAsString()) + "hPa";
 
         binding.tvLocation.setText(Location);
         binding.tvMainWeather.setText(MainWeather);
