@@ -1,5 +1,6 @@
 package com.example.weatherapp;
 
+import static com.example.weatherapp.presenter.Utils.getCurrentDateTimeFormatted;
 import static com.example.weatherapp.presenter.Utils.isNetworkAvailable;
 
 import androidx.appcompat.app.AlertDialog;
@@ -62,10 +63,12 @@ public class MainActivity extends AppCompatActivity implements MainInterface {
     private JsonObject weatherData, hourWeatherData;
     private ArrayList<WeatherModel> hourWeatherModelArrayList;
     private ArrayList<WeatherModel> cityWeatherModelArrayList;
+    private String latestUpdated;
     private static final String WEATHER_DATA = "WEATHER_DATA";
     private static final String LATEST_CURRENT_WEATHER_DATA = "LATEST_CURRENT_WEATHER_DATA";
     private static final String LATEST_HOUR_WEATHER_DATA = "LATEST_HOUR_WEATHER_DATA";
     private static final String LATEST_CITIES_WEATHER_DATA = "LATEST_CITIES_WEATHER_DATA";
+    private static final String LATEST_TIME_UPDATE = "LATEST_TIME_UPDATE";
     private ProgressDialog progressDialog;
     private MainPresenter mainPresenter;
     @Override
@@ -83,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements MainInterface {
 
         Gson gson = new Gson();
         weatherData = gson.fromJson(getSharedPreferences(WEATHER_DATA, MODE_PRIVATE).getString(LATEST_CURRENT_WEATHER_DATA, null), JsonObject.class);
-
+        latestUpdated = getSharedPreferences(WEATHER_DATA, MODE_PRIVATE).getString(LATEST_CURRENT_WEATHER_DATA, null);
         Type type = new TypeToken<ArrayList<WeatherModel>>() {}.getType();
         hourWeatherModelArrayList =  gson.fromJson(getSharedPreferences(WEATHER_DATA, MODE_PRIVATE).getString(LATEST_HOUR_WEATHER_DATA, null), type);
         cityWeatherModelArrayList =  gson.fromJson(getSharedPreferences(WEATHER_DATA, MODE_PRIVATE).getString(LATEST_CITIES_WEATHER_DATA, null), type);
@@ -93,6 +96,8 @@ public class MainActivity extends AppCompatActivity implements MainInterface {
 
         if (hourWeatherModelArrayList == null)
             hourWeatherModelArrayList = new ArrayList<>();
+        if (latestUpdated == null)
+            latestUpdated = "Latest update: ...";
 
         if (!isNetworkAvailable(this)){
             if (weatherData != null)
@@ -274,6 +279,12 @@ public class MainActivity extends AppCompatActivity implements MainInterface {
         RecyclerView.LayoutManager layoutManager1 = new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false);
         binding.rvCity.setLayoutManager(layoutManager1);
         binding.rvCity.setAdapter(cityWeatherAdapter);
+
+        this.latestUpdated = "Latest update: " + getCurrentDateTimeFormatted();
+        editor.putString(LATEST_TIME_UPDATE, this.latestUpdated);
+        editor.apply();
+        binding.tvLatest.setText(latestUpdated);
+
         if (isNetworkAvailable(this))
             progressDialog.dismiss();
     }
